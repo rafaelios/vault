@@ -90,7 +90,7 @@ class KeysController < ApplicationController
 
     @key.project = @project
 
-    @key.tags = Vault::Tag.create_from_string(key_params[:tags])
+    @key.tags = Vault::Tag.create_from_string(params["vault_key"]["tags"])
 
     self.update_wishlist
 
@@ -109,8 +109,8 @@ class KeysController < ApplicationController
 
       self.update_wishlist
 
-      if @key.update_attributes(params[:vault_key])
-        @key.tags = Vault::Tag.create_from_string(key_params[:tags])
+      if @key.update(key_params)
+        @key.tags = Vault::Tag.create_from_string(params["vault_key"]["tags"])
         format.html { redirect_to project_keys_path(@project), notice: t('notice.key.update.success') }
       else
         format.html { render action: 'edit'}
@@ -181,7 +181,7 @@ class KeysController < ApplicationController
   end
 
   def key_params
-    params.require(:vault_key).permit(:type, :name, :body, :login, :file, :url, :comment, :tags)
+    params.require(:vault_key).except(:tags).permit(:type, :name, :body, :login, :file, :url, :comment)
   end
 
   def index_params

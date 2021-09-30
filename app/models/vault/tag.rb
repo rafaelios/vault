@@ -3,13 +3,12 @@ module Vault
     self.table_name = 'vault_tags'
     has_and_belongs_to_many :keys
     unloadable
-    attr_accessible :name
 
     validates :name, presence: true, uniqueness: true
 
     def Tag::create_from_string(string)
       return [] if string.blank?
-
+      
       words = string.downcase.split(/,\s*/).map(&:strip)
       Tag.create(words.map { |t| {name: t} })
       tags = Tag.all.reduce({}) { |tags, t| tags.merge({t.name => t}) }

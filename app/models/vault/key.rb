@@ -7,8 +7,6 @@ module Vault
     has_and_belongs_to_many :tags
     unloadable
 
-    attr_accessible :project_id, :name, :body, :login, :type, :file, :project, :url, :comment, :whitelist
-
     #def tags=(tags_string)
     #  @tags = Vault::Tag.create_from_string(tags_string)
     #end
